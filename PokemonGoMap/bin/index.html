@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<title>Pokémon GO Map</title>
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+			padding: 0;
+			font-family: 'Open Sans', sans-serif;
+		}
+		h1 {
+			position: absolute;
+			width: 100%;
+			z-index: 3;
+			text-align: center;
+			background: rgba(255, 255, 255, .3);
+			margin: 0;
+			padding: .5em 0 .5em 0;
+		}
+		#map {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+		}
+		#id {
+			position: absolute;
+			max-width: 20%;
+			max-height: 60%;
+			overflow-y: scroll;
+			scroll: hidden;
+			right: 0;
+			top: 15%;
+			background: rgba(255, 255, 255, .5);
+			z-index: 2;
+		}
+		#id div {
+			padding: .2em 1em .2em .5em;
+			cursor: default;
+			font-size: .9em;
+			margin: .1em;
+			border-radius: .7em;
+		}
+		#id div.on {
+			background: white;
+		}
+		#footer {
+			position: absolute;
+			width: 100%;
+			bottom: 0;
+			z-index: 3;
+			text-align: center;
+			margin: 0;
+			padding: .5em 0 .5em 0;
+			font-size: .5em;
+		}
+	</style>
+</head>
+<body>
+<h1>Pokémon GO Map (Hong Kong)</h1>
+<div id="map"></div>
+<div id="id">
+	<div>001 奇異種子</div>
+	<div>002 奇異草</div>
+	<div>003 奇異花</div>
+	<div>004 小火龍</div>
+	<div>005 火恐龍</div>
+	<div>006 噴火龍</div>
+	<div>007 車厘龜</div>
+	<div>008 卡美龜</div>
+	<div>009 水箭龜</div>
+	<div>010 綠毛蟲</div>
+	<div>011 鐵甲蟲</div>
+	<div>012 巴他蝶</div>
+	<div>013 獨角蟲</div>
+	<div>014 鐵殼蛹</div>
+	<div>015 大針蜂</div>
+	<div>016 波波</div>
+	<div>017 比比鳥</div>
+	<div>018 大比鳥</div>
+	<div>019 小哥達</div>
+	<div>020 哥達</div>
+	<div>021 鬼雀</div>
+	<div>022 魔雀</div>
+	<div>023 阿柏蛇</div>
+	<div>024 阿柏怪</div>
+	<div>025 比卡超</div>
+	<div>026 雷超</div>
+	<div>027 穿山鼠</div>
+	<div>028 穿山王</div>
+	<div>029 尼美蘭</div>
+	<div>030 尼美羅</div>
+	<div>031 尼美后</div>
+	<div>032 尼多郎</div>
+	<div>033 尼多利</div>
+	<div>034 尼多王</div>
+	<div>035 皮皮</div>
+	<div>036 皮可斯</div>
+	<div>037 六尾</div>
+	<div>038 九尾</div>
+	<div>039 波波球</div>
+	<div>040 肥波球</div>
+	<div>041 波音蝠</div>
+	<div>042 大口蝠</div>
+	<div>043 行路草</div>
+	<div>044 怪味花</div>
+	<div>045 霸王花</div>
+	<div>046 蘑菇蟲</div>
+	<div>047 巨菇蟲</div>
+	<div>048 毛毛蟲</div>
+	<div>049 魔魯風</div>
+	<div>050 地鼠</div>
+	<div>051 三頭地鼠</div>
+	<div>052 喵喵怪</div>
+	<div>053 高竇貓</div>
+	<div>054 傻鴨</div>
+	<div>055 高超鴨</div>
+	<div>056 猴怪</div>
+	<div>057 火爆猴</div>
+	<div>058 護主犬</div>
+	<div>059 奉神犬</div>
+	<div>060 蚊香蝌蚪</div>
+	<div>061 蚊香蛙</div>
+	<div>062 大力蛙</div>
+	<div>063 卡斯</div>
+	<div>064 尤基納</div>
+	<div>065 富迪</div>
+	<div>066 鐵腕</div>
+	<div>067 大力</div>
+	<div>068 怪力</div>
+	<div>069 喇叭芽</div>
+	<div>070 口呆花</div>
+	<div>071 大食花</div>
+	<div>072 大眼水母</div>
+	<div>073 多腳水母</div>
+	<div>074 小拳石</div>
+	<div>075 滾動石</div>
+	<div>076 滾動岩</div>
+	<div>077 小火馬</div>
+	<div>078 烈焰馬</div>
+	<div>079 小呆獸</div>
+	<div>080 大呆獸</div>
+	<div>081 小磁怪</div>
+	<div>082 三合一磁怪</div>
+	<div>083 火蔥鴨</div>
+	<div>084 多多</div>
+	<div>085 多多利</div>
+	<div>086 小海獅</div>
+	<div>087 白海獅</div>
+	<div>088 爛泥怪</div>
+	<div>089 爛泥獸</div>
+	<div>090 貝殼怪</div>
+	<div>091 鐵甲貝</div>
+	<div>092 鬼斯</div>
+	<div>093 鬼斯通</div>
+	<div>094 耿鬼</div>
+	<div>095 大岩蛇</div>
+	<div>096 食夢獸</div>
+	<div>097 催眠獸</div>
+	<div>098 大鉗蟹</div>
+	<div>099 巨鉗蟹</div>
+	<div>100 霹靂彈</div>
+	<div>101 雷霆彈</div>
+	<div>102 蛋蛋</div>
+	<div>103 椰樹獸</div>
+	<div>104 卡拉卡拉</div>
+	<div>105 格拉格拉</div>
+	<div>106 沙古拉</div>
+	<div>107 比華拉</div>
+	<div>108 大舌頭</div>
+	<div>109 毒氣丸</div>
+	<div>110 毒氣雙子</div>
+	<div>111 鐵甲犀牛</div>
+	<div>112 鐵甲暴龍</div>
+	<div>113 吉利蛋</div>
+	<div>114 長藤怪</div>
+	<div>115 袋獸</div>
+	<div>116 噴墨海馬</div>
+	<div>117 飛刺海馬</div>
+	<div>118 獨角金魚</div>
+	<div>119 金魚王</div>
+	<div>120 海星星</div>
+	<div>121 寶石海星</div>
+	<div>122 吸盤小丑</div>
+	<div>123 飛天螳螂</div>
+	<div>124 紅唇娃</div>
+	<div>125 電擊獸</div>
+	<div>126 鴨嘴火龍</div>
+	<div>127 鉗刀甲蟲</div>
+	<div>128 大隻牛</div>
+	<div>129 鯉魚王</div>
+	<div>130 鯉魚龍</div>
+	<div>131 背背龍</div>
+	<div>132 百變怪</div>
+	<div>133 伊貝</div>
+	<div>134 水伊貝</div>
+	<div>135 雷伊貝</div>
+	<div>136 火伊貝</div>
+	<div>137 立方獸</div>
+	<div>138 菊石獸</div>
+	<div>139 多刺菊石獸</div>
+	<div>140 萬年蟲</div>
+	<div>141 鐮刀蟲</div>
+	<div>142 化石飛龍</div>
+	<div>143 卡比獸</div>
+	<div>144 急凍鳥</div>
+	<div>145 雷鳥</div>
+	<div>146 火鳥</div>
+	<div class="on">147 迷你龍</div>
+	<div class="on">148 哈古龍</div>
+	<div class="on">149 啟暴龍</div>
+	<div>150 超夢夢</div>
+	<div>151 夢夢</div>
+</div>
+<div id="footer">
+	tommyinb@github<br/>
+	update every 12 hours:
+</div>
+<script src="https://code.jquery.com/jquery-3.1.0.js" integrity="sha256-slogkvB1K3VOkzAI8QITxV3VzpOnkeNVsKvtkYLMjfk=" crossorigin="anonymous"></script>
+<script>
+	var map = null;
+	function initMap() {
+		map = new google.maps.Map($('#map')[0], {
+			zoom: 12,
+			center: { lat: 22.3549725, lng: 114.172396 }
+		});
+		display();
+	}
+	
+	$('#id div').click(function () {
+		$(this).toggleClass('on');
+		if (map == null) return;
+		display();
+	});
+	$('#id').animate({
+        scrollTop: $('#id div.on').offset().top
+    }, 50);
+
+	var monstersPoints = { };
+	function display() {
+		$('#id div').each(function (index, element) {
+			var id = parseInt($(element).text());
+			var monsterPoints = monstersPoints[id];
+			if (monsterPoints == 'loading') return;
+			
+			if ($(element).hasClass('on')) {
+				if (monsterPoints == undefined) {
+					monstersPoints[id] = 'loading';
+					$.get('Result/' + id + '.json', function (data) {
+						monstersPoints[id] = data.map(function (t) {
+							var marker = new google.maps.Marker({
+								position: { lat: t.a, lng: t.o },
+								icon: 'https://skipcdn.net/img/pokemon/small/' + id + '.png',
+								map: map
+							});
+							
+							var info = null;
+							marker.addListener('click', function() {
+								if (info == null) {
+									info = new google.maps.InfoWindow({
+										content: new Date(t.t * 1000).toLocaleString()
+									});
+								}
+							
+								info.open(map, marker);
+							});
+							
+							return marker;
+						});
+						display();
+					});
+				} else {
+					for (var i = 0; i < monsterPoints.length; i++) {
+						var monsterPoint = monsterPoints[i];
+						monsterPoint.setVisible(true);
+					}
+				}
+			} else {
+				if (monsterPoints != undefined) {
+					for (var i = 0; i < monsterPoints.length; i++) {
+						var monsterPoint = monsterPoints[i];
+						monsterPoint.setVisible(false);
+					}
+				}
+			}
+		});
+	}
+	
+	$.get('Result/result.json', function (data) {
+		$('#id div').each(function (index, element) {
+			var id = parseInt($(element).text());
+			var count = data.m[id] || 0;
+			$(element).text($(element).text() + ' (' + count + ')');
+		});
+		
+		var footer = $('#footer');
+		footer.html(footer.html() + new Date(data.t).toLocaleString());
+	});
+</script>
+<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8j8oxxqbnNBIWfj5tkjTUjNKCUl9Lz8M&callback=initMap"></script>
+</body>
+</html>
