@@ -53,6 +53,7 @@ namespace PokemonGoMap
             {
                 var text = File.ReadAllText(file);
                 dynamic json = JsonConvert.DeserializeObject(text);
+                if (json.pokemons == null) continue;
 
                 foreach (var pokemon in json.pokemons)
                 {

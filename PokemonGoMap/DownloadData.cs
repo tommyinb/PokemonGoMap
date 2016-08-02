@@ -1,5 +1,4 @@
-﻿using JsonPrettyPrinterPlus;
-using PokemonGoMap.Utility;
+﻿using PokemonGoMap.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -34,14 +33,9 @@ namespace PokemonGoMap
                 Directory.CreateDirectory(Folder);
                 var fileName = startTime.ToString("yyyyMMddHHmmss");
 
-                var rawPath = Path.Combine(Folder, fileName + ".raw.txt");
-                File.WriteAllText(rawPath, rawResult);
-                Logger.LogMessage("Export to " + rawPath);
-
-                var fullPath = Path.Combine(Folder, fileName + ".txt");
-                var jsonResult = rawResult.PrettyPrintJson();
-                File.WriteAllText(fullPath, jsonResult);
-                Logger.LogMessage("Beautify at " + rawPath);
+                var filePath = Path.Combine(Folder, fileName + ".txt");
+                File.WriteAllText(filePath, rawResult);
+                Logger.LogMessage("Export to " + filePath);
             }
         }
     }
