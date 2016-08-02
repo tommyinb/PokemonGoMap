@@ -65,12 +65,13 @@ namespace PokemonGoMap
 
             if (DateTime.Now >= NextReportTime)
             {
-                NextReportTime = DateTime.Now + TimeSpan.FromHours(6);
+                NextReportTime = DateTime.Now + TimeSpan.FromHours(1);
                 Task.Run(() =>
                 {
                     try
                     {
                         CreateReport.Run();
+                        CommitReport.Run();
                     }
                     catch (Exception ex)
                     {
