@@ -4,7 +4,7 @@
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<meta charset="utf-8">
 	<title>PokéNests</title>
-	<meta property="og:title" content="PokéNests 全香港精靈巢穴一覽無遺" />
+	<meta property="og:title" content="PokéNests 全香港精靈巢穴地圖" />
 	<meta property="og:description" content="你想知最新迷你龍係邊喥? 連啟暴龍定背背龍你都可以搵到。">
 	<meta property="og:type" content="article" />
 	<meta property="og:url" content="https://tommyinb.github.io/pokemon/" />
@@ -266,8 +266,22 @@
 							var info = null;
 							marker.addListener('click', function() {
 								if (info == null) {
+									var distanceTimes = data.map(function (s) {
+										var latitudeDistance = 110.574 * 1000 * (t.a - s.a);
+										var longitudeDistance = 111.320 * 1000 * Math.cos(t.a / 360) * (t.o - s.o);
+										var distance = Math.sqrt(latitudeDistance * latitudeDistance + longitudeDistance * longitudeDistance);
+										return { distance: distance, time: s.t };
+									});
+									
+									var within5m = distanceTimes.filter(function (s) { return s.distance <= 5; });
+									var within200m = distanceTimes.filter(function (s) { return s.distance <= 200 && s.distance > 5; });
+									var within800m = distanceTimes.filter(function (s) { return s.distance <= 800 && s.distance > 200; });
 									info = new google.maps.InfoWindow({
-										content: new Date(t.t * 1000).toLocaleString()
+										content: within5m.map(function (s) { return new Date(s.time * 1000).toLocaleString(); }).join('<br>')
+											+ (within5m.length + within200m.length + within800m.length > 1 ? '<br><br>' : '')
+											+ (within5m.length > 1 ? '同一地點: ' + within5m.length + ' 次<br>' : '')
+											+ (within200m.length > 0 ? '200米內: ' + within200m.length + ' 隻<br>' : '')
+											+ (within800m.length > 0 ? '800米內: ' + within800m.length + ' 隻' : '')
 									});
 								}
 							
