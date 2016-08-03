@@ -46,7 +46,7 @@ namespace PokemonGoMap
                 if (DateTime.TryParseExact(name, "yyyyMMddHHmmss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time) == false) return false;
 
                 return time <= DateTime.Now
-                    && time > DateTime.Now - TimeSpan.FromHours(12);
+                    && time > DateTime.Now - TimeSpan.FromHours(24);
             });
 
             foreach (var file in files)
