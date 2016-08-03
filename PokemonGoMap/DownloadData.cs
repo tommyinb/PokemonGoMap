@@ -1,4 +1,5 @@
-﻿using PokemonGoMap.Utility;
+﻿using Newtonsoft.Json;
+using PokemonGoMap.Utility;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +26,7 @@ namespace PokemonGoMap
             using (var response = request.GetResponse())
             {
                 var reader = new StreamReader(response.GetResponseStream());
-                var rawResult = reader.ReadToEnd();
+                var text = reader.ReadToEnd();
 
                 var endTime = DateTime.Now;
                 Form1.Logger.Log("End Read");
@@ -33,9 +34,29 @@ namespace PokemonGoMap
                 Directory.CreateDirectory(Folder);
                 var fileName = startTime.ToString("yyyyMMddHHmmss");
 
-                var filePath = Path.Combine(Folder, fileName + ".txt");
-                File.WriteAllText(filePath, rawResult);
-                Form1.Logger.Log("Export to " + filePath);
+                try
+                {
+                    dynamic result = JsonConvert.DeserializeObject(text);
+                    if (result.pokemons == null)
+                    {
+                        var emptyPath = Path.Combine(Folder, fileName + ".empty.txt");
+                        File.WriteAllText(emptyPath, text);
+                        Form1.Logger.Log("Export to " + emptyPath);
+                        return;
+                    }
+                }
+                catch (Exception e)
+                {
+                    var badPath = Path.Combine(Folder, fileName + ".bad.txt");
+                    File.WriteAllText(badPath, text);
+                    Form1.Logger.Log(e);
+                    Form1.Logger.Log("Export to " + badPath);
+                    return;
+                }
+
+                var validPath = Path.Combine(Folder, fileName + ".txt");
+                File.WriteAllText(validPath, text);
+                Form1.Logger.Log("Export to " + validPath);
             }
         }
     }
