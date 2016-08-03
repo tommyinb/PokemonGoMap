@@ -71,9 +71,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility\DailyLogger.cs" />
     <Compile Include="Utility\FastHttpRequest.cs" />
     <Compile Include="Utility\JavascriptUtil.cs" />
-    <Compile Include="Utility\Logger.cs" />
     <Compile Include="Utility\PredicateWait.cs" />
     <Compile Include="Utility\XmlUtil.cs" />
     <EmbeddedResource Include="Form1.resx">

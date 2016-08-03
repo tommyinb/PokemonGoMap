@@ -17,7 +17,7 @@ namespace PokemonGoMap
 
         public static void Run()
         {
-            Logger.LogMessage("Start Report");
+            Form1.Logger.Log("Start Report");
 
             var monstersPoints = LoadMonsters()
                 .ToLookup(t => new { t.Id, t.Latitude, t.Longitude, Time = t.Time.ToString("yyyyMMddHHmm") })
@@ -33,7 +33,7 @@ namespace PokemonGoMap
 
             WriteResult(monstersPoints);
 
-            Logger.LogMessage("End Report");
+            Form1.Logger.Log("End Report");
         }
 
         private static IEnumerable<Monster> LoadMonsters()

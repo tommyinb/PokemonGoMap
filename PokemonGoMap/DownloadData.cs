@@ -20,7 +20,7 @@ namespace PokemonGoMap
             request.Referer = "https://skiplagged.com/pokemon/";
 
             var startTime = DateTime.Now;
-            Logger.LogMessage("Start Read");
+            Form1.Logger.Log("Start Read");
 
             using (var response = request.GetResponse())
             {
@@ -28,14 +28,14 @@ namespace PokemonGoMap
                 var rawResult = reader.ReadToEnd();
 
                 var endTime = DateTime.Now;
-                Logger.LogMessage("End Read");
+                Form1.Logger.Log("End Read");
 
                 Directory.CreateDirectory(Folder);
                 var fileName = startTime.ToString("yyyyMMddHHmmss");
 
                 var filePath = Path.Combine(Folder, fileName + ".txt");
                 File.WriteAllText(filePath, rawResult);
-                Logger.LogMessage("Export to " + filePath);
+                Form1.Logger.Log("Export to " + filePath);
             }
         }
     }

@@ -17,6 +17,7 @@ namespace PokemonGoMap
         {
             InitializeComponent();
         }
+        public static readonly DailyLogger Logger = new DailyLogger(@"Log\program.log");
 
         private void timeTimer_Tick(object sender, EventArgs e)
         {
@@ -58,7 +59,7 @@ namespace PokemonGoMap
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogError(ex.ToString());
+                        Form1.Logger.Log(ex);
                     }
                 });
             }
@@ -75,7 +76,7 @@ namespace PokemonGoMap
                     }
                     catch (Exception ex)
                     {
-                        Logger.LogError(ex.ToString());
+                        Form1.Logger.Log(ex);
                     }
                 });
             }

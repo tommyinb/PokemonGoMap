@@ -13,7 +13,7 @@ namespace PokemonGoMap
     {
         public static void Run()
         {
-            Logger.LogMessage("Start Commit");
+            Form1.Logger.Log("Start Commit");
 
             var account = XmlUtil.ReadFile<Account>("Account.xml");
 
@@ -39,7 +39,7 @@ namespace PokemonGoMap
                 repo.Network.Push(remote, @"refs/heads/master", options);
             }
 
-            Logger.LogMessage("End Commit");
+            Form1.Logger.Log("End Commit");
         }
     }
 
