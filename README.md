@@ -1,6 +1,7 @@
 # PokemonGoMap - Find all PokeNests
 
-Real Time: https://rawgit.com/tommyinb/PokemonGoMap/master/PokemonGoMap/bin/index.html
+Real Time: 
+<a href="https://rawgit.com/tommyinb/PokemonGoMap/master/PokemonGoMap/bin/index.html" target="_blank">https://rawgit.com/tommyinb/PokemonGoMap/master/PokemonGoMap/bin/index.html</a>
 
 ![preview](https://raw.githubusercontent.com/tommyinb/PokemonGoMap/master/PokemonGoMap/bin/preview.png)
 
