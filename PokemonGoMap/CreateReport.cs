@@ -20,7 +20,7 @@ namespace PokemonGoMap
             Logger.LogMessage("Start Report");
 
             var monstersPoints = LoadMonsters()
-                .ToLookup(t => new { t.Id, t.Latitude, t.Longitude, Time = t.Time.ToString("yyyyMMddHHmmss") })
+                .ToLookup(t => new { t.Id, t.Latitude, t.Longitude, Time = t.Time.ToString("yyyyMMddHHmm") })
                 .Select(t => t.First())
                 .ToLookup(t => t.Id);
 
