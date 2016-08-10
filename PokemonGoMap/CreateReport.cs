@@ -38,7 +38,7 @@ namespace PokemonGoMap
 
         private static IEnumerable<Monster> LoadMonsters()
         {
-            var files = Directory.EnumerateFiles(DownloadData.Folder, "*.txt").Where(t =>
+            return Directory.EnumerateFiles(DownloadData.Folder, "*.json").Where(t =>
             {
                 var name = Path.GetFileNameWithoutExtension(t);
 
@@ -47,26 +47,11 @@ namespace PokemonGoMap
 
                 return time <= DateTime.Now
                     && time > DateTime.Now - TimeSpan.FromHours(24);
-            });
-
-            foreach (var file in files)
+            }).SelectMany(t =>
             {
-                var text = File.ReadAllText(file);
-                dynamic json = JsonConvert.DeserializeObject(text);
-                if (json.pokemons == null) continue;
-
-                foreach (var pokemon in json.pokemons)
-                {
-                    yield return new Monster
-                    {
-                        Id = pokemon.pokemon_id,
-                        Name = pokemon.pokemon_name,
-                        Latitude = pokemon.latitude,
-                        Longitude = pokemon.longitude,
-                        Time = JavascriptUtil.GetDateTime((long)pokemon.expires * 1000)
-                    };
-                }
-            }
+                var text = File.ReadAllText(t);
+                return JsonConvert.DeserializeObject<Monster[]>(text);
+            });
         }
 
         private static void WriteMonster(IGrouping<int, Monster> points)
@@ -96,16 +81,5 @@ namespace PokemonGoMap
             var json = JsonConvert.SerializeObject(data);
             File.WriteAllText(file, json);
         }
-    }
-
-    public class Monster
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-
-        public decimal Latitude { get; set; }
-        public decimal Longitude { get; set; }
-
-        public DateTime Time { get; set; }
     }
 }

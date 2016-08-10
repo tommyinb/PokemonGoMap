@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using PokemonGoMap.Utility;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -25,38 +26,41 @@ namespace PokemonGoMap
 
             using (var response = request.GetResponse())
             {
-                var reader = new StreamReader(response.GetResponseStream());
-                var text = reader.ReadToEnd();
-
+                var rawJson = response.GetResponseStream().ReadAllText(Encoding.UTF8);
+                
                 var endTime = DateTime.Now;
                 Form1.Logger.Log("End Read");
 
                 Directory.CreateDirectory(Folder);
                 var fileName = startTime.ToString("yyyyMMddHHmmss");
 
+                var rawPath = Path.Combine(Folder, fileName + ".raw.txt");
+                File.WriteAllText(rawPath, rawJson);
+                Form1.Logger.Log("Export to " + rawPath);
+
                 try
                 {
-                    dynamic result = JsonConvert.DeserializeObject(text);
-                    if (result.pokemons == null)
+                    dynamic result = JsonConvert.DeserializeObject(rawJson);
+                    var pokemons = ((IEnumerable)result.pokemons).Cast<dynamic>();
+                    var monsters = pokemons.Select(pokemon => new Monster
                     {
-                        var emptyPath = Path.Combine(Folder, fileName + ".empty.txt");
-                        File.WriteAllText(emptyPath, text);
-                        Form1.Logger.Log("Export to " + emptyPath);
-                        return;
-                    }
+                        Id = pokemon.pokemon_id,
+                        Name = pokemon.pokemon_name,
+                        Latitude = pokemon.latitude,
+                        Longitude = pokemon.longitude,
+                        Time = JavascriptUtil.GetDateTime((long)pokemon.expires * 1000),
+                        Source = "skiplagged"
+                    }).ToArray();
+
+                    var saveJson = JsonConvert.SerializeObject(monsters);
+                    var validPath = Path.Combine(Folder, fileName + ".json");
+                    File.WriteAllText(validPath, saveJson);
+                    Form1.Logger.Log("Export to " + validPath);
                 }
                 catch (Exception e)
                 {
-                    var badPath = Path.Combine(Folder, fileName + ".bad.txt");
-                    File.WriteAllText(badPath, text);
                     Form1.Logger.Log(e);
-                    Form1.Logger.Log("Export to " + badPath);
-                    return;
                 }
-
-                var validPath = Path.Combine(Folder, fileName + ".txt");
-                File.WriteAllText(validPath, text);
-                Form1.Logger.Log("Export to " + validPath);
             }
         }
     }

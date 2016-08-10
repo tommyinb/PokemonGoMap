@@ -42,13 +42,4 @@ namespace PokemonGoMap
             Form1.Logger.Log("End Commit");
         }
     }
-
-    public class Account
-    {
-        public string Username { get; set; }
-
-        public string Password { get; set; }
-
-        public string Email { get; set; }
-    }
 }
